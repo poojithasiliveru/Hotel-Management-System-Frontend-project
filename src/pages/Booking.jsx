@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import rooms from "../data/rooms";
 
 function Booking() {
   const { id } = useParams();

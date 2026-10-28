@@ -1,11 +1,35 @@
 
+import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import rooms from "../data/rooms";
+import axios from "axios";
+
+const API = "http://localhost:3001/rooms";
 
 function RoomDetails() {
   const { id } = useParams();
 
-  const room = rooms.find((item) => item.id === Number(id));
+  const [room, setRoom] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchRoom() {
+      try {
+        const response = await axios.get(`${API}/${id}`);
+        setRoom(response.data);
+      } catch (error) {
+        console.error("Error fetching room:", error);
+        setRoom(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchRoom();
+  }, [id]);
+
+  if (loading) {
+    return <p className="text-center mt-5">Loading room details...</p>;
+  }
 
   if (!room) {
     return (
@@ -47,7 +71,8 @@ function RoomDetails() {
           <p>{room.description}</p>
 
           <h4 className="text-primary">
-            ₹{room.price} <small className="text-secondary">/ night</small>
+            ₹{room.price}{" "}
+            <small className="text-secondary">/ night</small>
           </h4>
 
           <Link

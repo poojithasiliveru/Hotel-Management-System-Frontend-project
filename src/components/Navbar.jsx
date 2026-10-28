@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 function Navbar() {
   const navigate = useNavigate();
-
   const loggedInUser = localStorage.getItem("loggedInUser");
 
   function handleLogout() {
@@ -14,7 +13,6 @@ function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-white shadow">
       <div className="container">
-
         <Link to="/" className="navbar-brand text-primary fw-bold">
           StayEase
         </Link>
@@ -24,13 +22,15 @@ function Navbar() {
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#menu"
+          aria-controls="menu"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
 
         <div className="collapse navbar-collapse" id="menu">
           <ul className="navbar-nav ms-auto align-items-lg-center">
-
             <li className="nav-item">
               <Link className="nav-link" to="/">Home</Link>
             </li>
@@ -50,8 +50,14 @@ function Navbar() {
             {loggedInUser ? (
               <>
                 <li className="nav-item">
+                  <Link className="nav-link" to="/manage-rooms">
+                    Manage Rooms
+                  </Link>
+                </li>
+
+                <li className="nav-item">
                   <Link className="nav-link" to="/dashboard">
-                    My Bookings
+                    My Dashboard
                   </Link>
                 </li>
 
@@ -67,9 +73,7 @@ function Navbar() {
             ) : (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/login">
-                    Login
-                  </Link>
+                  <Link className="nav-link" to="/login">Login</Link>
                 </li>
 
                 <li className="nav-item ms-lg-2">
@@ -79,7 +83,6 @@ function Navbar() {
                 </li>
               </>
             )}
-
           </ul>
         </div>
       </div>

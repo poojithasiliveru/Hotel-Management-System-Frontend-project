@@ -15,7 +15,9 @@ import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
 import Profile from "./pages/Profile";
 import MyBookings from "./pages/MyBookings";
+import ManageRooms from "./pages/ManageRooms";
 
+// Login required pages
 function ProtectedRoute({ children }) {
   const user = localStorage.getItem("loggedInUser");
 
@@ -33,45 +35,64 @@ function App() {
 
       <Routes>
         {/* Public pages */}
+        <Route path="/" element={<Home />} />
+        <Route path="/rooms" element={<Rooms />} />
+        <Route path="/rooms/:id" element={<RoomDetails />} />
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/contact" element={<ContactUs />} />
+
+        {/* Authentication pages */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
         {/* Protected pages */}
-        <Route path="/" element={
-          <ProtectedRoute><Home /></ProtectedRoute>
-        } />
+        <Route
+          path="/booking/:id"
+          element={
+            <ProtectedRoute>
+              <Booking />
+            </ProtectedRoute>
+          }
+        />
 
-        <Route path="/rooms" element={
-          <ProtectedRoute><Rooms /></ProtectedRoute>
-        } />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
 
-        <Route path="/rooms/:id" element={
-          <ProtectedRoute><RoomDetails /></ProtectedRoute>
-        } />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
 
-        <Route path="/booking/:id" element={
-          <ProtectedRoute><Booking /></ProtectedRoute>
-        } />
+        <Route
+          path="/my-bookings"
+          element={
+            <ProtectedRoute>
+              <MyBookings />
+            </ProtectedRoute>
+          }
+        />
 
-        <Route path="/dashboard" element={
-          <ProtectedRoute><Dashboard /></ProtectedRoute>
-        } />
+        <Route
+          path="/manage-rooms"
+          element={
+            <ProtectedRoute>
+              <ManageRooms />
+            </ProtectedRoute>
+          }
+        />
 
-        <Route path="/about" element={
-          <ProtectedRoute><AboutUs /></ProtectedRoute>
-        } />
-
-        <Route path="/contact" element={
-          <ProtectedRoute><ContactUs /></ProtectedRoute>
-        } />
-        <Route path="/profile" element={
-          <ProtectedRoute><Profile /></ProtectedRoute>
-  }
-/>
-        <Route path="/my-bookings"element={
-          <ProtectedRoute><MyBookings /></ProtectedRoute>
-        }/>
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        {/* Unknown routes */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
       <Footer />
