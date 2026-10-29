@@ -16,6 +16,7 @@ import ContactUs from "./pages/ContactUs";
 import Profile from "./pages/Profile";
 import MyBookings from "./pages/MyBookings";
 import ManageRooms from "./pages/ManageRooms";
+import NotFound from "./pages/NotFound";
 
 // Login required pages
 function ProtectedRoute({ children }) {
@@ -90,8 +91,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
-        {/* Unknown routes */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
