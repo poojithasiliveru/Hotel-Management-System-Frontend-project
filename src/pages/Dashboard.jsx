@@ -1,18 +1,51 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Dashboard() {
-  const loggedInUser = localStorage.getItem("loggedInUser");
+  const navigate = useNavigate();
 
+  const loggedInUser = (
+    localStorage.getItem("loggedInUser") || ""
+  ).trim().toLowerCase();
+
+  if (!loggedInUser) {
+    return (
+      <div className="container my-5 text-center">
+        <h3>Please Login</h3>
+        <button
+          className="btn btn-primary mt-3"
+          onClick={() => navigate("/login")}
+        >
+          Login
+        </button>
+      </div>
+    );
+  }
+
+  // Get current user's details
+  const users = JSON.parse(
+    localStorage.getItem("registeredUsers") || "[]"
+  );
+
+  const currentUser = users.find(
+    (user) => user.email?.toLowerCase() === loggedInUser
+  );
+
+  // Get current user's bookings only
   const bookings = JSON.parse(
     localStorage.getItem(`myBookings_${loggedInUser}`) || "[]"
   );
 
   return (
     <div className="container my-5">
+
       <h2>My Dashboard</h2>
 
       <p className="text-secondary">
-        Welcome to your StayEase account.
+        Welcome {currentUser?.name || "User"} to your StayEase account.
+      </p>
+
+      <p>
+        <b>Email:</b> {loggedInUser}
       </p>
 
       <div className="row g-4 mt-2">
@@ -21,7 +54,12 @@ function Dashboard() {
         <div className="col-md-4">
           <div className="card shadow-sm h-100">
             <div className="card-body">
+
               <h5>My Bookings</h5>
+
+              <h3 className="text-primary">
+                {bookings.length}
+              </h3>
 
               <p>
                 {bookings.length > 0
@@ -37,6 +75,7 @@ function Dashboard() {
                   ? "View My Bookings"
                   : "Explore Rooms"}
               </Link>
+
             </div>
           </div>
         </div>
@@ -45,8 +84,16 @@ function Dashboard() {
         <div className="col-md-4">
           <div className="card shadow-sm h-100">
             <div className="card-body">
+
               <h5>My Profile</h5>
-              <p>Manage your account information.</p>
+
+              <p>
+                {currentUser?.name || "User"}
+              </p>
+
+              <p className="text-secondary">
+                Manage your account information.
+              </p>
 
               <Link
                 to="/profile"
@@ -54,6 +101,7 @@ function Dashboard() {
               >
                 View Profile
               </Link>
+
             </div>
           </div>
         </div>

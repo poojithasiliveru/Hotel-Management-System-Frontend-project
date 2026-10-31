@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
@@ -13,20 +12,56 @@ function Login() {
   function handleLogin(e) {
     e.preventDefault();
 
-    const registeredUser = JSON.parse(
+    const enteredEmail = email.trim().toLowerCase();
+
+    // Get multiple registered users
+    let users = JSON.parse(
+      localStorage.getItem("registeredUsers") || "[]"
+    );
+
+    // Support old single-user registration data
+    const oldUser = JSON.parse(
       localStorage.getItem("registeredUser") || "null"
     );
 
-    if (
-      registeredUser &&
-      registeredUser.email === email &&
-      registeredUser.password === password
-    ) {
-      localStorage.setItem("loggedInUser", email);
+    if (oldUser) {
+      const alreadyExists = users.some(
+        (u) => u.email?.toLowerCase() ===
+          oldUser.email?.toLowerCase()
+      );
 
-      const nextPage = location.state?.from?.pathname || "/";
+      if (!alreadyExists) {
+        users.push(oldUser);
+      }
+    }
+
+    // Find matching user
+    const currentUser = users.find(
+      (u) =>
+        u.email?.trim().toLowerCase() === enteredEmail &&
+        u.password === password
+    );
+
+    if (currentUser) {
+      // Save updated users
+      localStorage.setItem(
+        "registeredUsers",
+        JSON.stringify(users)
+      );
+
+      localStorage.removeItem("registeredUser");
+
+      // Save logged-in user
+      localStorage.setItem(
+        "loggedInUser",
+        currentUser.email.trim().toLowerCase()
+      );
+
+      const nextPage =
+        location.state?.from?.pathname || "/dashboard";
 
       navigate(nextPage, { replace: true });
+
     } else {
       setMessage("Invalid email or password. Please signup first.");
     }
@@ -43,6 +78,7 @@ function Login() {
 
               <form onSubmit={handleLogin}>
                 <label className="form-label">Email</label>
+
                 <input
                   type="email"
                   className="form-control mb-3"
@@ -52,6 +88,7 @@ function Login() {
                 />
 
                 <label className="form-label">Password</label>
+
                 <input
                   type="password"
                   className="form-control mb-3"
@@ -72,7 +109,8 @@ function Login() {
               )}
 
               <p className="text-center mt-3">
-                Don't have an account? <Link to="/signup">Sign Up</Link>
+                Don't have an account?{" "}
+                <Link to="/signup">Sign Up</Link>
               </p>
 
             </div>

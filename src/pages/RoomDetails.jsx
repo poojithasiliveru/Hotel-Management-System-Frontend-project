@@ -1,40 +1,28 @@
 
-import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
-
-const API = "http://localhost:3001/rooms";
+import { useState } from "react";
+import roomsData from "../data/rooms";
 
 function RoomDetails() {
   const { id } = useParams();
 
-  const [room, setRoom] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [room] = useState(() => {
+    const savedRooms = localStorage.getItem("hotelRooms");
 
-  useEffect(() => {
-    async function fetchRoom() {
-      try {
-        const response = await axios.get(`${API}/${id}`);
-        setRoom(response.data);
-      } catch (error) {
-        console.error("Error fetching room:", error);
-        setRoom(null);
-      } finally {
-        setLoading(false);
-      }
-    }
+    const rooms = savedRooms
+      ? JSON.parse(savedRooms)
+      : roomsData;
 
-    fetchRoom();
-  }, [id]);
-
-  if (loading) {
-    return <p className="text-center mt-5">Loading room details...</p>;
-  }
+    return rooms.find(
+      (item) => String(item.id) === String(id)
+    );
+  });
 
   if (!room) {
     return (
       <div className="container my-5">
         <h2>Room not found</h2>
+
         <Link to="/rooms" className="btn btn-primary">
           Back to Rooms
         </Link>

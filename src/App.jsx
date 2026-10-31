@@ -1,4 +1,3 @@
-
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
@@ -15,8 +14,6 @@ import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
 import Profile from "./pages/Profile";
 import MyBookings from "./pages/MyBookings";
-import ManageRooms from "./pages/ManageRooms";
-import NotFound from "./pages/NotFound";
 
 // Login required pages
 function ProtectedRoute({ children }) {
@@ -83,14 +80,6 @@ function App() {
           }
         />
 
-        <Route
-          path="/manage-rooms"
-          element={
-            <ProtectedRoute>
-              <ManageRooms />
-            </ProtectedRoute>
-          }
-        />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 

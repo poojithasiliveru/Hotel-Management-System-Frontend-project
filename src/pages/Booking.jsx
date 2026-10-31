@@ -1,56 +1,60 @@
-
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
-
-const API = "http://localhost:3001/rooms";
+import roomsData from "../data/rooms";
 
 function Booking() {
   const { id } = useParams();
 
-  const [room, setRoom] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const loggedInUser = (
+    localStorage.getItem("loggedInUser") || ""
+  ).trim().toLowerCase();
+
+  // Get logged-in user's details
+  const users = JSON.parse(
+    localStorage.getItem("registeredUsers") || "[]"
+  );
+
+  const currentUser = users.find(
+    (user) => user.email?.toLowerCase() === loggedInUser
+  );
+
+  const [room] = useState(() => {
+    const savedRooms = localStorage.getItem("hotelRooms");
+
+    const rooms = savedRooms
+      ? JSON.parse(savedRooms)
+      : roomsData;
+
+    return rooms.find(
+      (item) => String(item.id) === String(id)
+    );
+  });
+
   const [form, setForm] = useState({
-    name: "",
-    email: "",
+    name: currentUser?.name || "",
+    email: loggedInUser,
     checkIn: "",
     checkOut: "",
     guests: "1"
   });
+
   const [message, setMessage] = useState("");
   const [booked, setBooked] = useState(false);
 
   const today = new Date().toLocaleDateString("en-CA");
-
-  useEffect(() => {
-    async function getRoom() {
-      try {
-        const { data } = await axios.get(`${API}/${id}`);
-        setRoom(data);
-      } catch (error) {
-        console.error("Room fetch error:", error);
-        setRoom(null);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    getRoom();
-  }, [id]);
 
   function handleChange(e) {
     setForm((prev) => ({
       ...prev,
       [e.target.name]: e.target.value
     }));
+
     setMessage("");
   }
 
   function handleBooking(e) {
     e.preventDefault();
     setMessage("");
-
-    const loggedInUser = localStorage.getItem("loggedInUser");
 
     if (!loggedInUser) {
       setMessage("Please login before booking.");
@@ -68,27 +72,42 @@ function Booking() {
     }
 
     try {
+      // Separate storage for each user
       const key = `myBookings_${loggedInUser}`;
-      const bookings = JSON.parse(localStorage.getItem(key) || "[]");
+
+      const bookings = JSON.parse(
+        localStorage.getItem(key) || "[]"
+      );
 
       const booking = {
-        ...room,
+        ...form,
         bookingId: Date.now(),
-        ...form
+        userEmail: loggedInUser,
+        roomId: room.id,
+        roomName: room.name,
+        location: room.location,
+        price: room.price,
+        image: room.image,
+        type: room.type,
+        rating: room.rating,
+        description: room.description,
+        bookedAt: new Date().toISOString()
       };
 
-      localStorage.setItem(key, JSON.stringify([...bookings, booking]));
+      localStorage.setItem(
+        key,
+        JSON.stringify([...bookings, booking])
+      );
 
       setBooked(true);
-      setMessage(`Thank you ${form.name}! Your booking is successful.`);
+      setMessage(
+        `Thank you ${form.name}! Your booking is successful.`
+      );
+
     } catch (error) {
       console.error("Booking save error:", error);
       setMessage("Unable to save booking. Please try again.");
     }
-  }
-
-  if (loading) {
-    return <p className="text-center mt-5">Loading room details...</p>;
   }
 
   if (!room) {
@@ -108,38 +127,66 @@ function Booking() {
         <div className="col-md-7 col-lg-6">
           <div className="card shadow-sm">
             <div className="card-body p-4">
+
               <h2>Book Your Stay</h2>
-              <h5 className="text-primary mt-3">{room.name}</h5>
-              <p>{room.location} · ₹{room.price} per night</p>
+
+              <h5 className="text-primary mt-3">
+                {room.name}
+              </h5>
+
+              <p>
+                {room.location} · ₹{room.price} per night
+              </p>
 
               {booked ? (
                 <>
-                  <div className="alert alert-success">{message}</div>
-                  <Link to="/my-bookings" className="btn btn-primary">
+                  <div className="alert alert-success">
+                    {message}
+                  </div>
+
+                  <Link
+                    to="/my-bookings"
+                    className="btn btn-primary"
+                  >
                     View My Bookings
                   </Link>
                 </>
               ) : (
                 <form onSubmit={handleBooking}>
-                  {[
-                    ["name", "Full Name", "text"],
-                    ["email", "Email", "email"]
-                  ].map(([name, label, type]) => (
-                    <div className="mb-3" key={name}>
-                      <label className="form-label">{label}</label>
-                      <input
-                        className="form-control"
-                        name={name}
-                        type={type}
-                        value={form[name]}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  ))}
 
                   <div className="mb-3">
-                    <label className="form-label">Check-in Date</label>
+                    <label className="form-label">
+                      Full Name
+                    </label>
+
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={form.name}
+                      readOnly
+                      required
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">
+                      Email
+                    </label>
+
+                    <input
+                      type="email"
+                      className="form-control"
+                      value={form.email}
+                      readOnly
+                      required
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">
+                      Check-in Date
+                    </label>
+
                     <input
                       type="date"
                       className="form-control"
@@ -152,7 +199,10 @@ function Booking() {
                   </div>
 
                   <div className="mb-3">
-                    <label className="form-label">Check-out Date</label>
+                    <label className="form-label">
+                      Check-out Date
+                    </label>
+
                     <input
                       type="date"
                       className="form-control"
@@ -165,7 +215,10 @@ function Booking() {
                   </div>
 
                   <div className="mb-3">
-                    <label className="form-label">Number of Guests</label>
+                    <label className="form-label">
+                      Number of Guests
+                    </label>
+
                     <select
                       className="form-select"
                       name="guests"
@@ -180,7 +233,11 @@ function Booking() {
                     </select>
                   </div>
 
-                  <button type="submit" className="btn btn-primary w-100">
+                  <button
+                    type="submit"
+                    className="btn btn-primary w-100"
+                    disabled={!form.name}
+                  >
                     Confirm Booking
                   </button>
 
@@ -189,8 +246,10 @@ function Booking() {
                       {message}
                     </div>
                   )}
+
                 </form>
               )}
+
             </div>
           </div>
         </div>

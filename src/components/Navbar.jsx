@@ -1,4 +1,3 @@
-
 import { Link, useNavigate } from "react-router-dom";
 
 function Navbar() {
@@ -31,6 +30,7 @@ function Navbar() {
 
         <div className="collapse navbar-collapse" id="menu">
           <ul className="navbar-nav ms-auto align-items-lg-center">
+
             <li className="nav-item">
               <Link className="nav-link" to="/">Home</Link>
             </li>
@@ -50,12 +50,6 @@ function Navbar() {
             {loggedInUser ? (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/manage-rooms">
-                    Manage Rooms
-                  </Link>
-                </li>
-
-                <li className="nav-item">
                   <Link className="nav-link" to="/dashboard">
                     My Dashboard
                   </Link>
@@ -73,7 +67,9 @@ function Navbar() {
             ) : (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/login">Login</Link>
+                  <Link className="nav-link" to="/login">
+                    Login
+                  </Link>
                 </li>
 
                 <li className="nav-item ms-lg-2">
@@ -83,6 +79,7 @@ function Navbar() {
                 </li>
               </>
             )}
+
           </ul>
         </div>
       </div>
