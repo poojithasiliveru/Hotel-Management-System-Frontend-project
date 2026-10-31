@@ -52,7 +52,7 @@ const roomsData = [
   {
   id: 6,
   name: "Premium Heritage Hotel",
-  location: "Jaipur",
+  location: "goa",
   price: 3800,
   rating: 4.7,
   type: "Hotel",

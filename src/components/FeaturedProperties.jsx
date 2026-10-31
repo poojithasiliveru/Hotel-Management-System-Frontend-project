@@ -4,32 +4,35 @@ import RoomCard from "./RoomCard";
 function FeaturedProperties() {
   const rooms = [
     {
-      id: 1,
-      name: "Luxury Beach House",
-      location: "Goa",
-      price: 4500,
-      description: "Beautiful house with a beach view.",
-      image:
-        "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600"
-    },
-    {
-      id: 2,
-      name: "Premium Hotel",
-      location: "Hyderabad",
-      price: 2800,
-      description: "Comfortable rooms for your stay.",
-      image:
-        "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600"
-    },
-    {
-      id: 3,
-      name: "Mountain Cottage",
-      location: "Ooty",
-      price: 3500,
-      description: "Relax in a peaceful green location.",
-      image:
-        "https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?w=600"
-    }
+    id: "1",
+    name: "Deluxe Room",
+    location: "Hyderabad",
+    price: 2500,
+    rating: 4.5,
+    type: "Hotel",
+    description: "Comfortable room with modern facilities.",
+    image: "https://images.unsplash.com/photo-1611892440504-42a792e24d32"
+  },
+  {
+    id: "2",
+    name: "Luxury Villa",
+    location: "Ooty",
+    price: 4500,
+    rating: 4.8,
+    type: "Villa",
+    description: "Luxury villa with beautiful interiors.",
+    image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811"
+  },
+  {
+    id: "3",
+    name: "Beach Cottage",
+    location: "Vizag",
+    price: 3000,
+    rating: 4.2,
+    type: "Cottage",
+    description: "Peaceful cottage near the beach.",
+    image: "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2"
+  }
   ];
 
   return (
