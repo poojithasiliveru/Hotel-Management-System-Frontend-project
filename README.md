@@ -1,16 +1,62 @@
-# React + Vite
+# Hotel Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## About the Project
+The Hotel Management System is a web application developed using React.js. It helps users view hotel rooms, check room details, and make bookings easily.
 
-Currently, two official plugins are available:
+Users can register, log in, book rooms, and manage their bookings.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Technologies Used
+- React.js
+- JavaScript
+- HTML5
+- CSS3
+- Bootstrap
+- Vite
 
-## React Compiler
+## Features
+- User Registration and Login
+- View Available Rooms
+- Search and Filter Rooms
+- View Room Details
+- Book Hotel Rooms
+- View My Bookings
+- Edit and Delete Bookings
+- Responsive User Interface
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Installation and Setup
 
-## Expanding the ESLint configuration
+**1. Clone the repository**
+```bash
+git clone https://github.com/poojithasiliveru/Hotel-Management-System-Frontend-project.git
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+**2. Open the project folder**
+```bash
+cd Hotel-Management-System-Frontend-project
+```
+
+**3. Install dependencies**
+```bash
+npm install
+```
+
+**4. Run the project**
+```bash
+npm run dev
+```
+
+**5. Open in browser**
+
+http://localhost:5173
+
+## Live Demo
+[Hotel Management System](https://hotel-management-system-frontend-pr.vercel.app/)
+
+## GitHub Repository
+[View Source Code](https://github.com/poojithasiliveru/Hotel-Management-System-Frontend-project)
+
+## Future Improvements
+- Online Payment Integration
+- Admin Dashboard
+- Email Notifications
+- Real-Time Room Availability
